@@ -47,7 +47,7 @@ export default function FeatureImportance({ property }: FeatureImportanceProps) 
       </div>
       <div className="mt-6 pt-4 border-t border-gray-200">
         <p className="text-xs text-gray-500">
-          SHAP (SHapley Additive exPlanations) values quantify each feature's contribution to the model's prediction.
+          SHAP (SHapley Additive exPlanations) values quantify each feature&apos;s contribution to the model&apos;s prediction.
         </p>
       </div>
     </div>

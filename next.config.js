@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  output: 'export', // Static export for IIS deployment
   images: {
+    unoptimized: true, // Required for static export
     remotePatterns: [
       {
         protocol: 'https',
@@ -25,7 +27,7 @@ const nextConfig = {
       },
     ],
   },
+  trailingSlash: true, // Better compatibility with IIS
 }
 
 module.exports = nextConfig
-

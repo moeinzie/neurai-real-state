@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, AreaChart, Area, BoxPlot } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, AreaChart, Area } from 'recharts'
 import { TrendingUp, Map, BarChart3, DollarSign, Target, Zap, ArrowUpRight, ArrowDownRight, Activity, Building2, Home, TrendingDown, Layers } from 'lucide-react'
 
 const roiDistribution = [

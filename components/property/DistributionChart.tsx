@@ -47,7 +47,7 @@ export default function DistributionChart({ property, neighborhoodData, citywide
         <h2 className="text-lg font-semibold text-gray-900">ROI Distribution Context</h2>
       </div>
       <p className="text-sm text-gray-600 mb-6">
-        This property's predicted ROI compared to neighborhood and citywide distributions.
+        This property&apos;s predicted ROI compared to neighborhood and citywide distributions.
       </p>
 
       <div className="space-y-6">

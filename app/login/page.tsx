@@ -24,16 +24,6 @@ export default function LoginPage() {
         <div className="bg-white rounded-2xl shadow-xl p-8 md:p-10 border border-gray-100">
           <LoginForm />
         </div>
-
-        {/* Footer Link */}
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
-            Don't have an account?{' '}
-            <Link href="/register" className="font-semibold text-primary-600 hover:text-primary-700 transition-colors">
-              Sign up for free
-            </Link>
-          </p>
-        </div>
       </div>
     </div>
   )

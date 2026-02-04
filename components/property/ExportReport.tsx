@@ -3,12 +3,14 @@
 import { useState } from 'react'
 import { FileText, FileSpreadsheet, Loader2, Download } from 'lucide-react'
 import { Property } from '@/types/property'
+import { useToast } from '@/components/ui/Toast'
 
 interface ExportReportProps {
   property: Property
 }
 
 export default function ExportReport({ property }: ExportReportProps) {
+  const toast = useToast()
   const [exportingType, setExportingType] = useState<'pdf' | 'csv' | null>(null)
 
   const exportToPDF = async () => {
@@ -64,7 +66,7 @@ Generated: ${new Date().toLocaleString()}
       URL.revokeObjectURL(url)
     } catch (error) {
       console.error('Export failed:', error)
-      alert('Failed to export report. Please try again.')
+      toast.error('Failed to export report. Please try again.')
     } finally {
       setExportingType(null)
     }
@@ -107,7 +109,7 @@ Generated: ${new Date().toLocaleString()}
       URL.revokeObjectURL(url)
     } catch (error) {
       console.error('Export failed:', error)
-      alert('Failed to export CSV. Please try again.')
+      toast.error('Failed to export CSV. Please try again.')
     } finally {
       setExportingType(null)
     }

@@ -28,6 +28,7 @@ export interface Property {
   hasWheelchairAccess: boolean
   predictedROI: number // annualized return percentage
   arbitrageScore: number // standardized mispricing index
+  score?: number // property score
   riskIndicator: 'low' | 'medium' | 'high'
   clusterId?: string
   clusterLabel?: string

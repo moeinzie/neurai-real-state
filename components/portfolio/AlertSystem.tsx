@@ -62,7 +62,7 @@ export default function AlertSystem({ savedSearches = [], savedProperties = [] }
     setAlerts((prev) =>
       prev.map((alert) => (alert.id === alertId ? { ...alert, read: true } : alert))
     )
-    setHasUnread(alerts.some((a) => !a.id === alertId && !a.read))
+    setHasUnread(alerts.some((a) => a.id !== alertId && !a.read))
   }
 
   const markAllAsRead = () => {

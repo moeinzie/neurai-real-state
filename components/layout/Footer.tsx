@@ -8,7 +8,10 @@ export default function Footer() {
   
   // Hide footer on auth pages
   const authPages = ['/login', '/register', '/forgot-password']
-  const isAuthPage = authPages.includes(pathname)
+  const normalizePath = (path: string): string => {
+    return path.replace(/\/$/, '') || '/'
+  }
+  const isAuthPage = pathname ? authPages.some(route => normalizePath(pathname) === normalizePath(route)) : false
 
   if (isAuthPage) {
     return null

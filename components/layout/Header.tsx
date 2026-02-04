@@ -1,17 +1,41 @@
 'use client'
 
 import Link from 'next/link'
-import { User, Menu, X, LogIn } from 'lucide-react'
-import { useState } from 'react'
-import { usePathname } from 'next/navigation'
+import { Menu, X, LogOut } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const pathname = usePathname()
+  const router = useRouter()
 
   // Hide header on auth pages
   const authPages = ['/login', '/register', '/forgot-password']
-  const isAuthPage = authPages.includes(pathname)
+  const normalizePath = (path: string): string => {
+    return path.replace(/\/$/, '') || '/'
+  }
+  const isAuthPage = pathname ? authPages.some(route => normalizePath(pathname) === normalizePath(route)) : false
+
+  // Check if user is logged in
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token')
+      setIsLoggedIn(!!token && token !== 'undefined' && token !== 'null')
+    }
+  }, [pathname])
+
+  // Handle logout
+  const handleLogout = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      localStorage.removeItem('refreshToken')
+      localStorage.removeItem('tokenExpiry')
+      router.push('/login')
+    }
+  }
 
   const navItems = [
     { href: '/', label: 'Dashboard' },
@@ -56,22 +80,15 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center space-x-3">
-            <Link
-              href="/login"
-              className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded-md transition-colors"
-            >
-              <LogIn className="w-4 h-4" />
-              Login
-            </Link>
-            <Link
-              href="/register"
-              className="hidden md:flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-md transition-colors"
-            >
-              Register
-            </Link>
-            <button className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors">
-              <User className="w-5 h-5" />
-            </button>
+            {isLoggedIn && (
+              <button
+                onClick={handleLogout}
+                className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                Logout
+              </button>
+            )}
             <button
               className="md:hidden p-2 text-gray-600 hover:text-gray-900"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -98,21 +115,18 @@ export default function Header() {
                   {item.label}
                 </Link>
               ))}
-              <Link
-                href="/login"
-                onClick={() => setIsMenuOpen(false)}
-                className="px-3 py-2 rounded-md text-sm font-medium text-primary-600 hover:bg-primary-50 transition-colors flex items-center gap-2"
-              >
-                <LogIn className="w-4 h-4" />
-                Login
-              </Link>
-              <Link
-                href="/register"
-                onClick={() => setIsMenuOpen(false)}
-                className="px-3 py-2 rounded-md text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 transition-colors text-center"
-              >
-                Register
-              </Link>
+              {isLoggedIn && (
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false)
+                    handleLogout()
+                  }}
+                  className="px-3 py-2 rounded-md text-sm font-medium text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </button>
+              )}
             </nav>
           </div>
         )}

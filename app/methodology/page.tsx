@@ -135,7 +135,7 @@ export default function MethodologyPage() {
           </p>
           <ul className="list-disc list-inside space-y-2 text-gray-700 ml-4">
             <li>Predictions are based on historical patterns and may not account for unforeseen market changes</li>
-            <li>Model performance is validated on out-of-sample data, but past performance doesn't guarantee future results</li>
+            <li>Model performance is validated on out-of-sample data, but past performance doesn&apos;t guarantee future results</li>
             <li>Property-level predictions have inherent uncertainty, reflected in prediction intervals</li>
             <li>Market conditions, interest rates, and economic factors can significantly impact actual returns</li>
           </ul>

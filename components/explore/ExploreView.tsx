@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
-import PropertyMap from './PropertyMap'
+import { useState, useMemo, useEffect } from 'react'
 import PropertyList from './PropertyList'
 import FilterPanel from './FilterPanel'
 import { mockProperties } from '@/lib/mockData'
@@ -14,6 +13,21 @@ export default function ExploreView() {
   const [showFilters, setShowFilters] = useState(false)
   const [viewMode, setViewMode] = useState<'map' | 'list'>('map')
   const [showClusterLayers, setShowClusterLayers] = useState(false)
+  const [PropertyMap, setPropertyMap] = useState<any>(null)
+  const [isMapLoading, setIsMapLoading] = useState(true)
+
+  // Load PropertyMap only on client side for static export compatibility
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      import('./PropertyMap').then((module) => {
+        setPropertyMap(() => module.default)
+        setIsMapLoading(false)
+      }).catch((error) => {
+        console.error('Failed to load PropertyMap:', error)
+        setIsMapLoading(false)
+      })
+    }
+  }, [])
 
   const filteredProperties = useMemo(() => {
     let result = [...mockProperties]
@@ -252,13 +266,22 @@ export default function ExploreView() {
                   {showClusterLayers ? 'Hide' : 'Show'} Clusters
                 </button>
               </div>
-              <PropertyMap
-                properties={filteredProperties}
-                selectedProperty={selectedProperty}
-                onPropertySelect={setSelectedProperty}
-                showClusterLayers={showClusterLayers}
-                selectedClusters={filters.clusters || []}
-              />
+              {isMapLoading || !PropertyMap ? (
+                <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                  <div className="text-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto mb-2"></div>
+                    <p className="text-sm text-gray-600">Loading map...</p>
+                  </div>
+                </div>
+              ) : (
+                <PropertyMap
+                  properties={filteredProperties}
+                  selectedProperty={selectedProperty}
+                  onPropertySelect={setSelectedProperty}
+                  showClusterLayers={showClusterLayers}
+                  selectedClusters={filters.clusters || []}
+                />
+              )}
             </div>
             <div className="w-[360px] border-l border-gray-200 bg-white overflow-hidden">
               <PropertyList
@@ -284,13 +307,22 @@ export default function ExploreView() {
                     {showClusterLayers ? 'Hide' : 'Show'} Clusters
                   </button>
                 </div>
-                <PropertyMap
-                  properties={filteredProperties}
-                  selectedProperty={selectedProperty}
-                  onPropertySelect={setSelectedProperty}
-                  showClusterLayers={showClusterLayers}
-                  selectedClusters={filters.clusters || []}
-                />
+                {isMapLoading || !PropertyMap ? (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto mb-2"></div>
+                      <p className="text-sm text-gray-600">Loading map...</p>
+                    </div>
+                  </div>
+                ) : (
+                  <PropertyMap
+                    properties={filteredProperties}
+                    selectedProperty={selectedProperty}
+                    onPropertySelect={setSelectedProperty}
+                    showClusterLayers={showClusterLayers}
+                    selectedClusters={filters.clusters || []}
+                  />
+                )}
               </>
             ) : (
               <PropertyList
